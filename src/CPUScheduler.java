@@ -15,43 +15,30 @@ import java.text.*;
 
 public class CPUScheduler{
 
-    /** A constant for use in specifying the First Come 
-	First Serve scheduling algorithm */
-    public static final int FCFS       = 1;
-
-    /** A constant for use in specifying the 
-	Shortes Job First scheduling algorithm */
-    public static final int SJF        = 2;
-
-    /** A constant for use in specifying the 
-	Priority Queue scheduling algorithm */
-    public static final int PRIORITY   = 3;
-
-    /** A constant for use in specifying the 
-	Round Robin scheduling algorithm */
-    public static final int ROUNDROBIN = 4;
+    /** Which scheduling algorithm is in use currently */
+    private SchedulingAlgorithm schedulingAlgorithm = new RandomSchedulingAlgorithm();
 
     /** The default number of processes to randomly generate. The
 	programmer can use the articulate constructor to build their
 	own process set of any lenghth */
-    static final int DEF_PROC_COUNT=50;
+    private static final int DEF_PROC_COUNT=50;
 
     /** This simulates elapsed time. */
-    long currentTime=0;
+    private long currentTime=0;
 
     /** The amount of elapsed idle time. */
-    long idle=0;
+    private long idle=0;
 
     /** The amount of elapsed time that the CPU was kept busy. */
-    long busy=0;
+    private long busy=0;
 
     /** for use in the round robin algorithm. It is the timeslice each process
 	gets */
-    long quantum=10;
+    private long quantum=10;
 
     /** A  count down to when to interrupt a process because it's timeslice is
 	over. */
-    long quantumCounter=quantum;
+    private long quantumCounter=quantum;
 
     /** Only for the priority round robin algorithm, this variable keeps track of
 	the number of consecutive timeslices a process has consumed. */
@@ -68,10 +55,6 @@ public class CPUScheduler{
 
     /** Whether to use priority weights for the round robin algorithm. */
     boolean priority=false;
-
-    /** The algorithm to use for this simulation. */
-    int algorithm=this.FCFS;
-    
 
     /** The collection of all processes involved in this simulation. 
 	Extraneous now but handy for debugging.*/
@@ -189,23 +172,21 @@ public class CPUScheduler{
     /** Use the appropriate scheduler to choose the next process. Then
      * dispatch the process. */
     void Schedule(){
-	switch( algorithm ){
-	case FCFS :
-	    RunFCFS(readyQueue);
-	    break;
-	case SJF :
-	    RunSJF(readyQueue);
-	    break;
-	case PRIORITY :
-	    RunPriority(readyQueue);
-	    break;
-	case ROUNDROBIN :
-	    RunRoundRobin(readyQueue);
-	    break;
-	default:
-	    System.out.println("Not a valid scheduling algorithm");
-	    break;
+	Process p=null;
+	
+	try {
+	    if( activeJob.isFinished() || busy == 0 /*just starting sim*/){
+		activeJob = schedulingAlgorithm.getNextJob();
+		if (activeJob == null){
+		    System.out.println("no job");
+		    System.exit(-1);
+		}
+		activeIndex = readyQueue.indexOf(activeJob);
+	    }
 	}
+	catch( NullPointerException e){
+	}
+
 	Dispatch();
     }
 
@@ -221,154 +202,8 @@ public class CPUScheduler{
 		p.waiting(currentTime);
 	    }
 	}
-
     }
 
-    /** Do the FCFS scheduling algorithm */
-    void RunFCFS(Vector jq){
-	Process p;
-	
-	try {
-	    if(  busy == 0 || activeJob.getBurstTime() == 0 ){
-		activeJob = findEarliestJob(jq);
-		activeIndex = jq.indexOf(activeJob);
-	    }
-	}
-	catch( NullPointerException e){
-	}
-    }
-
-
-    /** Do the SJF scheduling algorithm. */
-    void RunSJF(Vector jq){
-	Process p;
-	try {
-	    if(  busy == 0 || activeJob.isFinished() || preemptive == true ){
-		activeJob = findShortestJob(jq);
-		activeIndex = jq.indexOf(activeJob);
-	    }
-	}
-	catch( NullPointerException e){
-	}
-    }
-
-    /** Do the Priority scheduling algorithm */
-    void RunPriority(Vector jq){
-	try {
-	    if( busy == 0 || activeJob.isFinished() || preemptive == true ){
-		activeJob = findLoftiestJob(jq);
-		activeIndex = jq.indexOf(activeJob);
-	    }
-	}
-	catch( NullPointerException e){
-	}
-    }
-
-    /** Do the RR scheduling algorithm */
-    void RunRoundRobin(Vector jq){
-	Process p=null;
-	
-	try {
-	    if( busy == 0 || activeJob.isFinished() || quantumCounter == 0){
-		activeJob = findNextJob(jq);
-		activeIndex = jq.indexOf(activeJob);
-		if( priority == true ){
-		    // weight timeslice by priority
-		    //quantumCounter = quantum * activeJob.getPriorityWeight(); // backwards
-		    quantumCounter = quantum * (10 - activeJob.getPriorityWeight() ); // backwards
-		}
-		else{
-		    quantumCounter = quantum;
-		}
-		
-	    }
-	    quantumCounter--;
-	}
-	catch( NullPointerException e){
-	}
-	
-    }
-
-
-    /** 
-     * RR: get the next job we should run (could be the one we're running).
-     */
-    Process findNextJob(Vector que){
-	Process p = null , nextJob = null;
-	int index=0;
-	
-	// All right who's next?  (index)
-	if( activeIndex >= (que.size() - 1) )
-	    index = 0;
-	else if( activeJob != null && activeJob.isFinished() ){
-	    index = activeIndex;
-	}
-	else{
-		index = (activeIndex + 1);
-	}
-	
-	nextJob = (Process) que.get(index);
-
-	return nextJob;
-    }
-
-
-    /**
-     * SJF: Locate the smallest job in a queue 
-     */
-    Process findShortestJob(Vector que){
-	Process p=null,shortest=null;
-	long time=0,shorttime=0;
-	
-	for(int i=0; i < que.size(); ++i){
-	    p = (Process) que.get(i);
-	    time = p.getBurstTime();
-	    if( (time < shorttime) || (i == 0) ){
-		shorttime = time;
-		shortest = p;
-	    }
-	}
-	return shortest;
-    }
-
-    /** 
-     * FCFS: Get the job that got here first 
-     */
-    Process findEarliestJob(Vector que){
-	Process p=null,earliest=null;
-	long time=0,arrTime=0;
-	
-	for(int i=0; i < que.size(); ++i){
-	    p = (Process) que.get(i);
-	    time = p.getArrivalTime();
-	    if( (time < arrTime) || (i == 0) ){
-		arrTime = time;
-		earliest = p;
-	    }
-	}
-	return earliest ;
-    }
-
-    
-    /** 
-     * find the job with the highest priority
-     * In case of tie take first in the queue 
-     */
-    Process findLoftiestJob(Vector que){
-	Process p=null,loftiest=null;
-	long priority=0, highest=0;
-	
-	for(int i=0; i < que.size(); ++i){
-	    p = (Process) que.get(i);
-	    priority = p.getPriorityWeight();
-	    if( ( priority < highest ) || (i == 0) ){
-		highest = priority;
-		loftiest = p;
-	    }
-	}
-	return loftiest;
-    }
-		
 
     /**
      * Loop through the job queue and grab important statistics
@@ -485,6 +320,7 @@ public class CPUScheduler{
 	    p = (Process) jobQueue.get(i);
 	    if( p.getArrivalTime() == currentTime){
 		readyQueue.add(p);
+		schedulingAlgorithm.addJob(p);
 		procsIn++;
 	    }
 	}
@@ -498,6 +334,7 @@ public class CPUScheduler{
 	    p = (Process) readyQueue.get(i);
 	    if( p.isFinished() == true ){
 		readyQueue.remove(i);
+		schedulingAlgorithm.removeJob(p);
 		procsOut++;
 	    }
 	}
@@ -511,6 +348,7 @@ public class CPUScheduler{
 	    p = (Process) jobQueue.get(i);
 	    if( p.isFinished() == true ){
 		jobQueue.remove(i);
+		schedulingAlgorithm.removeJob(p);
 	    }
 	}
     }
@@ -654,17 +492,13 @@ public class CPUScheduler{
      * Set the value of algorithm.
      * @param algo The algorithm to use for this simualtion.
      */
-    public void setAlgorithm(int algo){ algorithm = algo;}
+    public void setAlgorithm(SchedulingAlgorithm algo){ schedulingAlgorithm = algo;}
 
     /**
-     * Get the value of algorithm.
-     * @return Value of algorithm.
+     * Get the current algorithm.
+     * @return The algorithm.
      */
-    public int getAlgorithm(){ return algorithm; }
-
-
-
-
+    public SchedulingAlgorithm getAlgorithm (){ return schedulingAlgorithm; }
 
     /**
      * Get the number of idle cpu cycles.
@@ -899,24 +733,7 @@ public class CPUScheduler{
      * @return String containing the currently running algorithm's name
      */
     public String getAlgorithmName(){
-	String s="";
-	switch( algorithm ){
-	case FCFS :
-	    s = "First come first serve";
-	    break;
-	case SJF :
-	    s = "Shortest job first";
-	    break;
-	case PRIORITY :
-	    s = "Priority Weighted";
-	    break;
-	case ROUNDROBIN :
-	    s = "Round Robin";
-	    break;
-	default:
-	    break;
-	}
-	return s;
+	return schedulingAlgorithm.getName();
     }
 
 }// ENDS class CPUScheduler

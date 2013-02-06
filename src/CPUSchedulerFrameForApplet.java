@@ -242,25 +242,25 @@ public class CPUSchedulerFrameForApplet extends JFrame implements ActionListener
 	    repaint();
 	}
 	else if( e.getSource() == fcfsRB){
-	    cpu.setAlgorithm(CPUScheduler.FCFS);
+	    //cpu.setAlgorithm(new FCFSSchedulingAlgorithm());
 	    priCB.setEnabled(false);
 	    preemptCB.setEnabled(false);
 	    algolLbl.setText("FCFS");
 	}
 	else if( e.getSource() == rrRB){
-	    cpu.setAlgorithm(CPUScheduler.ROUNDROBIN);
+	    //cpu.setAlgorithm(new RoundRobinSchedulingAlgorithm());
 	    priCB.setEnabled(true);
 	    preemptCB.setEnabled(false);
 	    algolLbl.setText("RR");
 	}
 	else if( e.getSource() == sjfRB){
-	    cpu.setAlgorithm(CPUScheduler.SJF);
+	    //cpu.setAlgorithm(new SJFSchedulingAlgorithm());
 	    priCB.setEnabled(false);
 	    preemptCB.setEnabled(true);
 	    algolLbl.setText("SJF");
 	}
 	else if( e.getSource() == priRB){
-	    cpu.setAlgorithm(CPUScheduler.PRIORITY);
+	    //cpu.setAlgorithm(new PrioritySchedulingAlgorithm());
 	    priCB.setEnabled(false);
 	    preemptCB.setEnabled(true);
 	    algolLbl.setText("PRI");

@@ -1,0 +1,154 @@
+    /** 
+     * RR: get the next job we should run (could be the one we're running).
+     */
+    Process findNextJob(Vector que){
+	Process p = null , nextJob = null;
+	int index=0;
+	
+	// All right who's next?  (index)
+	if( activeIndex >= (que.size() - 1) )
+	    index = 0;
+	else if( activeJob != null && activeJob.isFinished() ){
+	    index = activeIndex;
+	}
+	else{
+		index = (activeIndex + 1);
+	}
+	
+	nextJob = (Process) que.get(index);
+
+	return nextJob;
+    }
+
+
+	String s="";
+	switch( algorithm ){
+	case FCFS :
+	    s = "First come first serve";
+	    break;
+	case SJF :
+	    s = "Shortest job first";
+	    break;
+	case PRIORITY :
+	    s = "Priority Weighted";
+	    break;
+	case ROUNDROBIN :
+	    s = "Round Robin";
+	    break;
+	default:
+	    break;
+	}
+
+    /**
+     * SJF: Locate the smallest job in a queue 
+     */
+    Process findShortestJob(Vector que){
+	Process p=null,shortest=null;
+	long time=0,shorttime=0;
+	
+	for(int i=0; i < que.size(); ++i){
+	    p = (Process) que.get(i);
+	    time = p.getBurstTime();
+	    if( (time < shorttime) || (i == 0) ){
+		shorttime = time;
+		shortest = p;
+	    }
+	}
+	return shortest;
+    }
+
+    /** 
+     * FCFS: Get the job that got here first 
+     */
+    Process findEarliestJob(Vector que){
+	Process p=null,earliest=null;
+	long time=0,arrTime=0;
+	
+	for(int i=0; i < que.size(); ++i){
+	    p = (Process) que.get(i);
+	    time = p.getArrivalTime();
+	    if( (time < arrTime) || (i == 0) ){
+		arrTime = time;
+		earliest = p;
+	    }
+	}
+	return earliest ;
+    }
+
+    
+    /** 
+     * find the job with the highest priority
+     * In case of tie take first in the queue 
+     */
+    Process findLoftiestJob(Vector que){
+	Process p=null,loftiest=null;
+	long priority=0, highest=0;
+	
+	for(int i=0; i < que.size(); ++i){
+	    p = (Process) que.get(i);
+	    priority = p.getPriorityWeight();
+	    if( ( priority < highest ) || (i == 0) ){
+		highest = priority;
+		loftiest = p;
+	    }
+	}
+	return loftiest;
+    }
+		
+
+
+    /** Do the FCFS scheduling algorithm */
+    void RunFCFS(Vector jq){
+	Process p;
+	
+	try {
+	    if(  busy == 0 || activeJob.getBurstTime() == 0 ){
+		activeJob = findEarliestJob(jq);
+		activeIndex = jq.indexOf(activeJob);
+	    }
+	}
+	catch( NullPointerException e){
+	}
+    }
+
+
+    /** Do the SJF scheduling algorithm. */
+    void RunSJF(Vector jq){
+	Process p;
+	try {
+	    if(  busy == 0 || activeJob.isFinished() || preemptive == true ){
+		activeJob = findShortestJob(jq);
+		activeIndex = jq.indexOf(activeJob);
+	    }
+	}
+	catch( NullPointerException e){
+	}
+    }
+
+    /** Do the Priority scheduling algorithm */
+    void RunPriority(Vector jq){
+	try {
+	    if( busy == 0 || activeJob.isFinished() || preemptive == true ){
+		activeJob = findLoftiestJob(jq);
+		activeIndex = jq.indexOf(activeJob);
+	    }
+	}
+	catch( NullPointerException e){
+	}
+    }
+
+    /** Do the RR scheduling algorithm */
+    void RunRoundRobin(Vector jq){
+		/**if( priority == true ){
+		    // weight timeslice by priority
+		    //quantumCounter = quantum * activeJob.getPriorityWeight(); // backwards
+		    quantumCounter = quantum * (10 - activeJob.getPriorityWeight() ); // backwards
+		}
+		else{
+		    quantumCounter = quantum;
+		    }*/
+		
+	    //quantumCounter--;
+	
+    }
+

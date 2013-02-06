@@ -1,6 +1,6 @@
 all: classes javadocs tarfile jarfile
 
-classes: BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java	JunkGenerator.java MainApp.java	Makefile Process.java ProcessPanel.java	StatsPanel.java
+classes: BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java	JunkGenerator.java MainApp.java	Makefile Process.java ProcessPanel.java	StatsPanel.java SchedulingAlgorithm.java RandomSchedulingAlgorithm.java
 #We need to tell java compiler where to put the package hierarchy (current directory)
 	javac -d . *.java
 	@echo 'To run do "java com.jimweller.cpuscheduler.MainApp" or "make run"'
