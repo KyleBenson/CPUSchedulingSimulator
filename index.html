@@ -1,0 +1,579 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+              "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html>
+  <head>
+    <title>CPU Scheduler Application</title>
+  </head>
+
+  <body bgcolor="darkgray">
+    
+  
+    <table width=90% border=0 bgcolor=white cellpadding=5 align=center>
+	<tr>
+      <td>
+		    <h1> CPU Scheduler Application</h1>
+		    <a href="screens.html">Screenshots</a> | <a href="applet.html">Applet</a> | <a href="#download">Download</a> | <a href="#discussion">Discussion</a> | <a href="#data">Data</a> | <a href="#conclusions">Conclusions</a> | <a href="#appendix">Appendices</a><br>
+		    <P>
+		      A nice java application that simulates differnet CPU scheduling 
+		      algorithms. Now available as an <a href="applet.html">applet</a>.
+		    </P>
+
+       </td>
+	  <td align="center">
+            <a href="screens.html" border=0><img border=0 src="pics/cpushed_thumb.gif" border=0></a>
+      </td>
+</tr>
+<tr>
+<td colspan=2>
+	    <a name="download"></a> <h2>Downloading and Running the Applicaton</h2>
+    	    This application was written with the Java2 SDK. It's components use the 
+    	    swing framework from the javax package. You can run this program <a 
+    	    href="applet.html">from the web as an applet</a>.  But because of applet security
+    	    you won't be able to open data files or save statistics.
+    	    
+    	<p>
+            To run this program locally you'll need to 
+            download and install <a href="http://java.sun.com/">Java</a>. Then 
+            download my <a href="cpu.jar">cpu.jar</a> file and run it with the 
+            following command:<br><br> 
+            
+            <tt>java -jar cpu.jar</tt><br><br>
+
+    	    Alternately, you can unpack the <a href="cpu.tar.gz">tar.gz</a> file 
+    	    onto your hardrive and run the class file from the current directory. 
+    	    This will give you the images directory, all of my source code,  and the 
+    	    data files with predefined simulation data sets. It goes like 
+    	    this:<br><br>
+	    <tt>
+	      tar -xzvf cpu.tar.gz<br>
+          cd src<br>
+	      java MainApp
+	    </tt><br><br>
+	    
+	    <P>
+	    Whether .jar or .class file, if you run the application locally
+	    you have the option of opening predetermined datasets from a file
+	    and of saving your runtime statistics as a csv file.
+	    <p>
+
+	    
+
+	    <a name="discussion"></a><h2>Discussion</h2>
+	    <P>This application is designed to simulate the short term scheduler
+	      in an operating system.  Realize that a real operating system CPU scheduler
+	      will probably use multi level feedback queues, process aging, and any number of combinations of
+	      the algorithms used here, but the application serves as a way to
+	      percieve the algorithms visually. My hope is that it can be used
+	      to <b>show</b> OS students how these mechanisms work.</P>
+
+	    <a name="data"></a><H3>The Data</H3><a href="data">Sample Data!</a>
+	    
+	    <P>This simulation simulates process arriving in a job
+	      queue. A process is some abstract job performed by a
+	      user. It arrives in a ready queue and requires CPU
+	      time. Outputs record times and statistics about when and how
+	      the scheduler chose the job for execution. To see a complete
+	      layout of the data and program see the generated <a href="javadocs">javadocs</a>.
+
+	    </P>
+	    <b>These are the inputs for the simulation</b>
+	    <UL>
+	      <LI>Initial burst time<br>
+		This is the amount of CPU time the process will require. In real life this is
+		not really known, but can be predicted with some degree of accuracy.</li>
+	      <LI>Delay<br>
+		The time seperating the arrival of processes. The amount of time after the (n-1)th process
+		arrives that this process arrives.</li>
+	      <LI>Priority<br>
+		For prioritized algorithms this is the relative weight of this process. The range is from
+		0 - 9 where 9 is the lowest priority and 0 is the highest<br>
+	    </ul>
+
+	    <B>These are some auxillary and tracking data</b>
+	    <ul>
+	      <LI>PID<BR>
+		A Process ID is number to identify a particular process. Each PID is unique to 
+		a process.</LI>
+	      <LI>Arrival start and finish time<br>
+		Record the time a job arrives, when it is started, and when it is finished. These
+		times allow us to derive three quantifiers.
+		<UL>
+		  <LI>Response Time<br>
+		    The amount of time a ready job sat in the queue befor the process was started.</LI>
+		  <LI>Turnaround Time<br>
+		    The total life of the process in the ready queue.</LI>
+		  <LI>Wait Time<br>
+		    The time this process spent in the ready queue waiting for CPU time.</LI>
+		</ul>
+	    </ul>
+	    
+	    
+	    <H3>The Scheduling Algorithms</h3>
+	    <P>I used four different scheduling algorithms some of which
+	      of multiple variations.
+	      
+	    <ul>
+	      <LI>First Come First Serve (FCFS) <br>
+		This is the simplest algorithm. It implements a FIFO queue. The first
+		job that arrives in the ready queue is run to completion, and then
+		the next job is selected in arrival order. The FCFS algorithm is
+		neither prioritized nor preemptive. </li>
+
+	      <LI>Shortest Job First (SJF) (Preemptive, Non-preemptive) <BR>
+		The SJF algorithm chooses the shortest job. Without
+		preemption jobs run to completion before a new job is
+		selected . If preemption is enabled then the instant a
+		job arrives that is shorter than the one being run the
+		CPU switches to the new shorter job. The processing can
+		be interrupted to run newly arrived shorter jobs.</li>
+	      <LI>Round Robin (RR)  (Prioritized, Equal time)<br>
+		The Round Robin scheduling algorithm allocates a timeslice to 
+		each running process. This is called the quantum and it represents
+		the number of CPU cycles a process gets befor the scheduler
+		searches for a new job to run. Jobs recieve their quantums
+		of CPU time in FCFS order.  With priorit scheduling enabled
+		the quantum is multiplied by the magnitude of a processes priority.
+		Thus more important jobs get more CPU time.</li>
+	      <LI>Priority Weighted (PRI) (Preemptive, Non-preemptive)<br>
+		The priority scheduling algorithm selects its next job based on the importance of
+		the process.  The job that has the highest priority (0 high : 9 low) is run first. If 
+		preemption is enabled the new jobs with a higher priority will interrupt the currently
+		executing job. Without preemption the highest priority job is chosen after the active
+		process finishes execution.</li>
+
+	    </ul>
+
+	    <a name="conclusions"></a><H3>Conclusions</H3>
+	    Below are the summary statistics for the different algorithms. For a complete table
+	    go <a href="data">here</a><br><br>
+	    
+
+
+	    <Table border=0 cellspacing=0 cellpadding=5>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4 BGCOLOR="lightblue" ROWSPAN=6 ALIGN="left" VALIGN="top">
+		    <FONT FACE="Geneva" SIZE="-1" >
+		      Middle of the road algorithm. Nothing good nothing bad. If your job arrives later even if it
+		      is short and of the highest priority it might have to wait a while; especially on busy systems.
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD COLSPAN=4 ALIGN="center" VALIGN="bottom"><FONT FACE="Arial" SIZE="+1" ><B>First Come First Serve</B></FONT></TD>
+		</TR>
+		<TR>
+		  <TD ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR>
+		  <TD ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right" VALIGN="bottom"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR>
+		  <TD ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right" VALIGN="bottom"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >34.7</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >34.7</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >65.32</FONT></TD>
+		</TR>
+		<TR>
+		  <TD ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right" VALIGN="bottom"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >156</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >156</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >196</FONT></TD>
+		</TR>
+		<TR>
+		  <TD ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right" VALIGN="bottom"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >43.67</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >43.67</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right" VALIGN="bottom"><FONT FACE="Geneva" SIZE="-1" >49.75</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		</TR>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4 BGCOLOR="lightblue" ROWSPAN=6 ALIGN="left">
+		    <FONT FACE="Geneva" SIZE="-1">
+		      This is the elitist's algorithms. "Not only to I get to go before you, if I get in the ready
+		      queue and your running I will kick you out."  Handy if your a sysadmin, but not a very 
+		      fair mechanism. Plus, the wait times are high. You could be at your terminal waiting for
+		      a long time.If your really low priority then you won't even notice the preemption.
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD COLSPAN=4 ALIGN="center"><FONT FACE="Arial" SIZE="+1" ><B>Priority (preemmptive)</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >34.34</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >18.2</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >64.96</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >429</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >363</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >528</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >85.6</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >55.81</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >96.83</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		</TR>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4 BGCOLOR="lightblue" ROWSPAN=6 ALIGN="left">
+		    <FONT FACE="Geneva" SIZE="-1" >
+		      The egalitarian algorithm. Great response times, but turn around times are high. It's kind of the 
+		      waiter/waitress algorithm. You get service quickly, but the amount of time you get serviced is small and 
+		      far between.  If the queue is really full it you could be waiting a long time for your little quantum.
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD COLSPAN=4 ALIGN="center"><FONT FACE="Arial" SIZE="+1" ><B>Round Robin (equal time)</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >39.96</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >7.64</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >70.58</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >197</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >46</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >296</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >48.8</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >11.44</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >65.81</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		</TR>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4  BGCOLOR="lightblue" ROWSPAN=6 ALIGN="left">
+		    <FONT FACE="Geneva" SIZE="-1" >
+		      This is the egalitarian republic algorithm. Everyone is given an equal opportunity at time,
+		      but only the really important jobs really get it. What you gain in turn around time, you lose
+		      in response time.
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1"
+		      >&nbsp;</FONT></TD> <TD COLSPAN=4
+		    ALIGN="center"><FONT FACE="Arial" SIZE="+1"
+		      ><B>Round Robin (prioritized)</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >41.6</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >27.44</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >72.22</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >194</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >108</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >250</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >50.42</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >32.24</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >61.46</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		</TR>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4 ROWSPAN=6  BGCOLOR="lightblue"  ALIGN="left">
+		    <FONT FACE="Geneva" SIZE="-1">
+ 		      This is just a brain dead version or the preemptive priority algorithm. Same problems, only
+		      elite processes get time. If your not important you'll be at your terminal for a while. 
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD COLSPAN=4 ALIGN="center"><FONT FACE="Arial" SIZE="+1" ><B>Priority (non-preemmptive)</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" COLOR="#FFFFFF" ><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >28.52</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >28.52</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >59.14</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >363</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >363</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >386</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >58.02</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >58.02</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >65.74</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		</TR>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4  BGCOLOR="lightblue" ROWSPAN=6 ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >
+		      This is an interesting one. Exempt from the plagues of prioritizing, jobs are chosen
+		      based on the size of the job ( a purely scalar value). Long jobs tend to sit and rot
+		      unless all the short jobs get run right away.  This algorithm works fine for jobs 
+		      that are spaced far apart.
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD COLSPAN=4 ALIGN="center"><FONT FACE="Arial" SIZE="+1" ><B>Shortest Job First</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >23.4</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >23.4</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >54.02</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >147</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >147</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >246</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >33.49</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >33.49</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >48.95</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="left"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		</TR>
+		<TR VALIGN="top">
+		  <TD COLSPAN=4 ROWSPAN=6 BGCOLOR="lightblue" ALIGN="left">
+		    <FONT FACE="Geneva" SIZE="-1" >
+		      The addition of preemption to the SJF algorithm give slight increases in wait and tournaround time,
+		      without really effecting the response time. Long jobs have an even higher tendency to lag at the back
+		      of the queue since they can be interrupted by short jobs. Even when long jobs get a chance to execute, they can be interrupted.
+		    </FONT>
+		  </TD>
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD COLSPAN=4 ALIGN="center"><FONT FACE="Arial" SIZE="+1" ><B>Shortest Job First (preemptive)</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#ffffff"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Wait</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Response</B></FONT></TD>
+		  <TD BGCOLOR="#000090"  ALIGN="right"><FONT FACE="Geneva" SIZE="-1"  COLOR="#FFFFFF"><B>Turnaround</B></FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Min</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >0</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >3</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Mean</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >18.24</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >13.68</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >48.86</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>Max</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >187</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >147</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >286</FONT></TD>
+		</TR>
+		<TR VALIGN="bottom">
+		  <TD ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >&nbsp;</FONT></TD>
+		  <TD BGCOLOR="#000090" ALIGN="right"><FONT FACE="Arial" COLOR="#FFFFFF"><B>StdDev</B></FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >39.06</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >31.59</FONT></TD>
+		  <TD BGCOLOR="#C0C0C0" ALIGN="right"><FONT FACE="Geneva" SIZE="-1" >57.55</FONT></TD>
+		</TR>
+	    </Table>
+
+
+
+
+	    <a name="appendix"></a><H2>Appendices</h2>
+	    <h3>What (if any) relation holds between the following pairs of sets of algorithms?</h3>
+	    <OL type="a">
+	      <li> <b>Priority and SJF</b><br>
+		The SJF algorithm a derivative of the Priority algorithm where the priority of the process is set to
+		according to the size of the job. Shorter jobs have higher priorities.
+	      <li> <b>Multilevel feedback queues and FCFS</b><br>
+		FCFS is a good algorithm for one of the sub-queues of a multilevel feedback queueu. Specifically, the batch queue.
+	      <li> <b>Priority and FCFS</b><br>
+		FCFS is a sub set of priority; where the higher priority is assigned to the earlier job.
+	      <li><b> RR and SJF</b><br>
+		There is do direct relationship. If given a prioritized scheduler we could set the time quantum equal to
+		the length of the job and give shorter jobs a higher priority.
+	    </ol>
+
+	    <H3>References</h3>
+	    <ul>
+	      <li><b>[Mullen 1985]</b> B. Mullen, <I>The Multics Scheduler</I>, <a href=" http://www.multicians.org/mult-sched.html">http://www.multicians.org/mult-sched.html</a> (1995)
+	      <LI><b>[Silberschatz and Galvin 1998]</b> A. Silberschatz, P. Galvin, <I>Operating System Concepts</I>, Addison Wesley Longman, Inc. (1998)
+	    </ul>
+
+
+	  </td>
+	</tr>
+    </table>
+    
+    <hr>
+    <address><a href="mailto:jim.weller@gci.net"></a></address>
+    $Date: 2006/03/31 19:07:27 $
+  </body>
+</html>
+ 
