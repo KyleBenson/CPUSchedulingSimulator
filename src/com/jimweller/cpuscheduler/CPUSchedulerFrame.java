@@ -28,6 +28,10 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
     
     CPUScheduler cpu;
 
+    //To store all available algorithms in
+    Vector<SchedulingAlgorithm> algs;
+    Vector<JRadioButtonMenuItem> algButtons;
+
     JCheckBox startCB;
     ImageIcon playPic, pausePic, pressPic;
 
@@ -37,7 +41,6 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
     JMenuItem newMI, openMI, resetMI, saveMI,quitMI;
     JRadioButtonMenuItem fps1MI,fps10MI,fps20MI,fps30MI,fps40MI,fps50MI,
 	fps60MI,fps70MI,fps80MI,fps90MI,fps100MI;
-    JRadioButtonMenuItem  fcfsRB,sjfRB,rrRB,priRB;
     JCheckBoxMenuItem     preemptCB,priCB,showHiddenCB;
 
 
@@ -247,31 +250,6 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    } 
 	    repaint();
 	}
-	else if( e.getSource() == fcfsRB){
-	    cpu.setAlgorithm(new RandomSchedulingAlgorithm());
-	    //cpu.setAlgorithm(new FCFSSchedulingAlgorithm());
-	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(false);
-	    algolLbl.setText("FCFS");
-	}
-	else if( e.getSource() == rrRB){
-	    cpu.setAlgorithm(new RoundRobinSchedulingAlgorithm());
-	    priCB.setEnabled(true);
-	    preemptCB.setEnabled(false);
-	    algolLbl.setText("RR");
-	}
-	else if( e.getSource() == sjfRB){
-	    //cpu.setAlgorithm(new SJFSchedulingAlgorithm());
-	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(true);
-	    algolLbl.setText("SJF");
-	}
-	else if( e.getSource() == priRB){
-	    //cpu.setAlgorithm(new PrioritySchedulingAlgorithm());
-	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(true);
-	    algolLbl.setText("PRI");
-	}
 	else if( e.getSource() == priCB){
 	    cpu.setPriority( (! cpu.getPriority()) );
 	}
@@ -373,6 +351,42 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	else if( e.getSource() == fps100MI){
 	    setFPS(100);
 	}
+
+	else {
+	    //Check if it's one of the algorithms
+	    for (int i = 0; i < algButtons.size(); i++){
+		if( e.getSource() == algButtons.get(i)){
+		    SchedulingAlgorithm newAlg = algs.get(i);
+		    cpu.setAlgorithm(newAlg);
+		    algolLbl.setText(newAlg.getName());
+		}
+	    }
+	}
+	/*	else
+	    cpu.setAlgorithm(new RandomSchedulingAlgorithm());
+	    //cpu.setAlgorithm(new FCFSSchedulingAlgorithm());
+	    priCB.setEnabled(false);
+	    preemptCB.setEnabled(false);
+	    algolLbl.setText("FCFS");
+	}
+	else if( e.getSource() == rrRB){
+	    cpu.setAlgorithm(new RoundRobinSchedulingAlgorithm());
+	    priCB.setEnabled(true);
+	    preemptCB.setEnabled(false);
+	    algolLbl.setText("RR");
+	}
+	else if( e.getSource() == sjfRB){
+	    //cpu.setAlgorithm(new SJFSchedulingAlgorithm());
+	    priCB.setEnabled(false);
+	    preemptCB.setEnabled(true);
+	    algolLbl.setText("SJF");
+	}
+	else if( e.getSource() == priRB){
+	    //cpu.setAlgorithm(new PrioritySchedulingAlgorithm());
+	    priCB.setEnabled(false);
+	    preemptCB.setEnabled(true);
+	    algolLbl.setText("PRI");
+	    }*/
     }
 
     /**
@@ -493,30 +507,23 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 
 	ButtonGroup algogroup = new ButtonGroup();
 
-	fcfsRB = new JRadioButtonMenuItem("First Come First Serve");
-	fcfsRB.setSelected(true);
-	fcfsRB.setToolTipText("First Come First Serve scheduling");
-	algogroup.add(fcfsRB);
-	fcfsRB.addActionListener(this);
-	algorithmMenu.add(fcfsRB);
+	//TODO: auto-do this
+	algButtons = new Vector<JRadioButtonMenuItem>();
+	algs = new Vector<SchedulingAlgorithm>();
+	algs.add(new RandomSchedulingAlgorithm());
+	algs.add(new RoundRobinSchedulingAlgorithm());
 
-	sjfRB = new JRadioButtonMenuItem("Shortest Job First");
-	sjfRB.setToolTipText("Shortest job first scheduling");
-	algogroup.add(sjfRB);
-	sjfRB.addActionListener(this);
-	algorithmMenu.add(sjfRB);
-
-	rrRB = new JRadioButtonMenuItem("Round Robin");
-	rrRB.setToolTipText("Round Robin Scheduling");
-	algogroup.add(rrRB);
-	rrRB.addActionListener(this);
-	algorithmMenu.add(rrRB);
-
-	priRB = new JRadioButtonMenuItem("Priority");
-	priRB.setToolTipText("Priority weighted scheduling");
-	priRB.addActionListener(this);
-	algogroup.add(priRB);
-	algorithmMenu.add(priRB);
+	boolean setFirst = false;
+	for (SchedulingAlgorithm alg : algs) {
+	    JRadioButtonMenuItem newButton = new JRadioButtonMenuItem(alg.getName());
+	    newButton.setToolTipText(alg.getName() + " scheduling");
+	    newButton.addActionListener(this);
+	    algogroup.add(newButton);
+	    algorithmMenu.add(newButton);
+	    algButtons.add(newButton);
+	    //if (!setFirst)
+	    //	newButton.setSelected(true);
+	}
 
 	optionsMenu.add(algorithmMenu);
 
