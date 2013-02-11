@@ -7,12 +7,13 @@ PACKAGE_DIR = com/jimweller/cpuscheduler
 RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java JunkGenerator.java MainApp.java Process.java ProcessPanel.java StatsPanel.java SchedulingAlgorithm.java
 RAW_SOURCES += $(SCHEDULING_ALGORITHMS)
 SOURCES = $(foreach s, $(RAW_SOURCES), $(PACKAGE_DIR)/$(s))
+PICS_DIR = ~/repos/CPUSchedulingSimulator/pics/
 
 all: classes javadocs tarfile jarfile
 
 classes: $(SOURCES) Makefile
 #We need to tell java compiler where to put the package hierarchy (current directory)
-	javac -d . -cp $(PACKAGE_DIR) -sourcepath $(PACKAGE_DIR) $(SOURCES)
+	javac -d . -cp $(PICS_DIR):.:$(PACKAGE_DIR) -sourcepath $(PACKAGE_DIR) $(SOURCES)
 	@echo 'To run do "java com.jimweller.cpuscheduler.MainApp" or "make run"'
 
 javadocs: classes
@@ -33,4 +34,4 @@ clean:
 	rm -rf *.class
 
 run:
-	java com.jimweller.cpuscheduler.MainApp
+	java -cp $(PICS_DIR):. com.jimweller.cpuscheduler.MainApp

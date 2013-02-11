@@ -634,29 +634,9 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
      * Build the buttons for the applications 
      */
     void buildButtons(){
-	//playPic = new ImageIcon();
-	//pausePic = new ImageIcon();
-	//pressPic = new ImageIcon();
-
-	//playPic = new ImageIcon("http://www.jimweller.net/jim/java_proc_sched/pics/play.gif");
-	//pausePic = new ImageIcon("http://www.jimweller.net/jim/java_proc_sched/pics/pause.gif");
-	//pressPic = new ImageIcon("http://www.jimweller.net/jim/java_proc_sched/pics/playing.gif");
-
-
-    URL iconURL = ClassLoader.getSystemResource("/com/jimweller/cpuscheduler/pics/play.gif");
-    if (iconURL != null) {
-    	playPic  = new ImageIcon(iconURL,"play");
-    }
-    
-    iconURL = ClassLoader.getSystemResource("/com/jimweller/cpuscheduler/pics/pause.gif");
-    if (iconURL != null) {
-    	pausePic = new ImageIcon(iconURL,"pause");
-    }
-    
-    iconURL = ClassLoader.getSystemResource("/com/jimweller/cpuscheduler/pics/playing.gif");
-    if (iconURL != null) {
-    	pressPic = new ImageIcon(iconURL,"playing");
-    }
+	playPic  = new ImageIcon("../pics/play.gif","play");
+	pausePic  = new ImageIcon("../pics/pause.gif","pause");
+	pressPic  = new ImageIcon("../pics/press.gif","press");
 
 	startCB = new JCheckBox(playPic,false);
 	startCB.addActionListener(this);
