@@ -1,16 +1,26 @@
+# add your scheduling algorithms here!
+SCHEDULING_ALGORITHMS =  RandomSchedulingAlgorithm.java RoundRobinSchedulingAlgorithm.java
+############################################
+
+#Build up SOURCES to include all java files in the package directory with full relative pathnames
+PACKAGE_DIR = com/jimweller/cpuscheduler
+RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java JunkGenerator.java MainApp.java Process.java ProcessPanel.java StatsPanel.java SchedulingAlgorithm.java
+RAW_SOURCES += $(SCHEDULING_ALGORITHMS)
+SOURCES = $(foreach s, $(RAW_SOURCES), $(PACKAGE_DIR)/$(s))
+
 all: classes javadocs tarfile jarfile
 
-classes: BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java	JunkGenerator.java MainApp.java	Makefile Process.java ProcessPanel.java	StatsPanel.java SchedulingAlgorithm.java RandomSchedulingAlgorithm.java
+classes: $(SOURCES) Makefile
 #We need to tell java compiler where to put the package hierarchy (current directory)
-	javac -d . *.java
+	javac -d . -cp $(PACKAGE_DIR) -sourcepath $(PACKAGE_DIR) $(SOURCES)
 	@echo 'To run do "java com.jimweller.cpuscheduler.MainApp" or "make run"'
 
 javadocs: classes
 	javadoc -private -version -author -d ../javadocs/ *.java > ../javadocs/javadoc.log 2>&1
 
 jarfile:
-	mkdir -p com/jimweller/cpuscheduler
-	cp -a *.class pics com/jimweller/cpuscheduler
+	mkdir -p $(PACKAGE_DIR)
+	cp -a *.class pics $(PACKAGE_DIR)
 	jar	cfm ../cpu.jar manifest.txt com 
 
 tarfile:
@@ -18,9 +28,9 @@ tarfile:
 
 clean:
 	mv ../javadocs/CVS ../javadocs/.CVS
-	rm -rf com *.class ../cpu.jar ../cpu.tar.gz ../javadocs/*
+	rm -rf *.class ../cpu.jar ../cpu.tar.gz ../javadocs/*
 	mv ../javadocs/.CVS ../javadocs/CVS
-	rm -rf *.class com
+	rm -rf *.class
 
 run:
 	java com.jimweller.cpuscheduler.MainApp
