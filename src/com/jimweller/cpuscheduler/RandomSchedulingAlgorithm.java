@@ -31,9 +31,13 @@ public class RandomSchedulingAlgorithm implements SchedulingAlgorithm {
 
     }
 
+    public boolean shouldPreempt(long currentTime){
+	return true;
+    }
+
     /** Returns the next process that should be run by the CPU, null if none available.*/
     public Process getNextJob(){
-	return jobs.get(rand.nextInt() % jobs.size());
+	return jobs.get(rand.nextInt(jobs.size()));
     }
 
     public String getName(){

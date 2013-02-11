@@ -32,57 +32,42 @@ public class CPUScheduler{
     /** The amount of elapsed time that the CPU was kept busy. */
     private long busy=0;
 
-    /** for use in the round robin algorithm. It is the timeslice each process
-	gets */
-    private long quantum=10;
-
-    /** A  count down to when to interrupt a process because it's timeslice is
-	over. */
-    private long quantumCounter=quantum;
-
-    /** Only for the priority round robin algorithm, this variable keeps track of
-	the number of consecutive timeslices a process has consumed. */
-    long turnCounter=0;
-
     /** The number of jobs submitted for execution. */
-    int procsIn=0;
+    private int procsIn=0;
 
     /** the number of jobs that have been executed to completion. */
-    int procsOut=0;
+    private int procsOut=0;
 
     /** Whether to use premption for the SJF and Priority algorithms. */
-    boolean preemptive=false;
+    private boolean preemptive=false;
 
     /** Whether to use priority weights for the round robin algorithm. */
-    boolean priority=false;
+    private boolean priority=false;
 
     /** The collection of all processes involved in this simulation. 
 	Extraneous now but handy for debugging.*/
-    Vector allProcs   = new Vector(DEF_PROC_COUNT);
+    private Vector allProcs   = new Vector(DEF_PROC_COUNT);
 
     /** The collection of all jobs that will be used */
-    Vector jobQueue   = new Vector(DEF_PROC_COUNT);
+    private Vector jobQueue   = new Vector(DEF_PROC_COUNT);
 
     /** The collection of all jobs that have arrived and require CPU time. */
-    Vector readyQueue = new Vector(DEF_PROC_COUNT);
+    private Vector readyQueue = new Vector(DEF_PROC_COUNT);
 
     /** A reference to the currently active job. The cpu changes this reference to 
 	different jobs in the ready queue using the respective algorithm's criteria */
-    Process activeJob = null;
-
-    /** The index into the vector/array/readyQueue. */
-    int     activeIndex = 0;
+    private Process activeJob = null;
 
     /* Variables to store harvested statistics on wait, response and
        turnaround time */
-    int minWait=0,maxWait=0;
-    double meanWait=0.0,sDevWait=0.0;
+    private int minWait=0,maxWait=0;
+    private double meanWait=0.0,sDevWait=0.0;
 
-    int minResponse=0,maxResponse=0;
-    double meanResponse=0.0,sDevResponse=0.0;
+    private int minResponse=0,maxResponse=0;
+    private double meanResponse=0.0,sDevResponse=0.0;
 
-    int minTurn=0,maxTurn=0;
-    double meanTurn=0.0,sDevTurn=0.0;
+    private int minTurn=0,maxTurn=0;
+    private double meanTurn=0.0,sDevTurn=0.0;
 
     /** Default constructor which builds DEF_PROC_COUNT randomly
 	generated processes and loads them into the job queue */
@@ -167,16 +152,18 @@ public class CPUScheduler{
     }
 
 
-
-    
     /** Use the appropriate scheduler to choose the next process. Then
      * dispatch the process. */
     void Schedule(){
 	Process p=null;
-	
-	try {
-	    if( activeJob.isFinished() || busy == 0 /*just starting sim*/){
-		activeJob = schedulingAlgorithm.getNextJob();
+
+	if (schedulingAlgorithm.shouldPreempt(currentTime)){
+	    activeJob = schedulingAlgorithm.getNextJob();
+	}
+	//try {
+	//  if( activeJob.isFinished() || busy == 0 /*just starting sim*/){
+		//activeJob = schedulingAlgorithm.getNextJob();
+	/*
 		if (activeJob == null){
 		    System.out.println("no job");
 		    System.exit(-1);
@@ -185,7 +172,7 @@ public class CPUScheduler{
 	    }
 	}
 	catch( NullPointerException e){
-	}
+	}*/
 
 	Dispatch();
     }
@@ -520,19 +507,6 @@ public class CPUScheduler{
 
 
     /**
-     * Get the value of quantum.
-     * @return Value of quantum.
-     */
-    public long getQuantum() {return quantum;}
-    
-    /**
-     * Set the value of quantum.
-     * @param v  Value to assign to quantum.
-     */
-    public void setQuantum(long  v) {this.quantum = v;}
-    
-
-    /**
      * Get the value of priority.
      * @return Value of priority.
      */
@@ -622,9 +596,6 @@ public class CPUScheduler{
 	idle = 0;
 	procsIn = 0;
 	procsOut = 0;
-	quantum = 10;
-	quantumCounter = quantum;
-	turnCounter = 0;
 
 	minWait=0;
 	meanWait=0;

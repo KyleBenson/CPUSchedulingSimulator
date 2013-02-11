@@ -248,13 +248,14 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    repaint();
 	}
 	else if( e.getSource() == fcfsRB){
+	    cpu.setAlgorithm(new RandomSchedulingAlgorithm());
 	    //cpu.setAlgorithm(new FCFSSchedulingAlgorithm());
 	    priCB.setEnabled(false);
 	    preemptCB.setEnabled(false);
 	    algolLbl.setText("FCFS");
 	}
 	else if( e.getSource() == rrRB){
-	    //cpu.setAlgorithm(new RoundRobinSchedulingAlgorithm());
+	    cpu.setAlgorithm(new RoundRobinSchedulingAlgorithm());
 	    priCB.setEnabled(true);
 	    preemptCB.setEnabled(false);
 	    algolLbl.setText("RR");
