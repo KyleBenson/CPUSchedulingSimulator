@@ -8,12 +8,13 @@ RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedul
 RAW_SOURCES += $(SCHEDULING_ALGORITHMS)
 SOURCES = $(foreach s, $(RAW_SOURCES), $(PACKAGE_DIR)/$(s))
 PICS_DIR = ~/repos/CPUSchedulingSimulator/pics/
+CLASSPATH = $(PICS_DIR):.:$(PACKAGE_DIR):./reflections.jar:lib/dom4j-1.6.1.jar:lib/gson-1.4.jar:lib/guava-r08.jar:lib/javassist-3.12.1.GA.jar:lib/jboss-vfs-3.0.0.CR5.jar:lib/slf4j-api-1.6.1.jar:lib/slf4j-simple-1.6.1.jar:lib/xml-apis-1.0.b2.jar
 
 all: classes javadocs tarfile jarfile
 
 classes: $(SOURCES) Makefile
 #We need to tell java compiler where to put the package hierarchy (current directory)
-	javac -d . -cp $(PICS_DIR):.:$(PACKAGE_DIR) -sourcepath $(PACKAGE_DIR) $(SOURCES)
+	javac -d . -cp $(CLASSPATH) $(SOURCES)
 	@echo 'To run do "java com.jimweller.cpuscheduler.MainApp" or "make run"'
 
 javadocs: classes
@@ -34,4 +35,4 @@ clean:
 	rm -rf *.class
 
 run:
-	java -cp $(PICS_DIR):. com.jimweller.cpuscheduler.MainApp
+	java -cp $(CLASSPATH) com.jimweller.cpuscheduler.MainApp

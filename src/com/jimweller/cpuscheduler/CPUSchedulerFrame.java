@@ -3,6 +3,7 @@ package com.jimweller.cpuscheduler;
 //import Process;
 //import CPUScheduler;
 import java.util.Vector;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -17,6 +18,9 @@ import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import java.net.*;
+
+//import org.reflections.scanners.SubTypesScanner;
+import org.reflections.*;
 
 /** 
  * CPUSchedulerFrame is a JFrame that contains and represents a CPUScheduler object. One can
@@ -82,6 +86,7 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	setSize(790,390);
 	setIconImage(Toolkit.getDefaultToolkit().getImage("com/jimweller/cpuscheduler/pics/cpu.jpg"));
 	
+	getAlgorithms(); //must do first before buildMenus()
 	buildButtons();
 	queuePanel = new JPanel();
 	buildMenus();
@@ -509,9 +514,6 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 
 	//TODO: auto-do this
 	algButtons = new Vector<JRadioButtonMenuItem>();
-	algs = new Vector<SchedulingAlgorithm>();
-	algs.add(new RandomSchedulingAlgorithm());
-	algs.add(new RoundRobinSchedulingAlgorithm());
 
 	boolean setFirst = false;
 	for (SchedulingAlgorithm alg : algs) {
@@ -654,8 +656,23 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	startCB.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
-
-
+    /**
+     * Find all available SchedulingAlgorithms and populate our lists with them.
+     */
+    void getAlgorithms(){
+	algs = new Vector<SchedulingAlgorithm>();
+		
+	Reflections reflections = new Reflections("com.jimweller.cpuscheduler");    
+	Set<Class<? extends SchedulingAlgorithm>> classes = reflections.getSubTypesOf(SchedulingAlgorithm.class);
+	for (Class algClass : classes){
+	    try{
+		algs.add((SchedulingAlgorithm)algClass.newInstance());
+	    } catch (InstantiationException e) {}
+	    catch (IllegalAccessException e) {}
+	}
+	//algs.add(new RandomSchedulingAlgorithm());
+	//algs.add(new RoundRobinSchedulingAlgorithm());
+    }
 
     
 } // ENDS  CPUSchedulerFram
