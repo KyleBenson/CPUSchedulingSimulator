@@ -14,6 +14,10 @@ public abstract class BaseSchedulingAlgorithm implements SchedulingAlgorithm {
     /** True if this algorithm will ever choose to preempt a currently running process. */
     protected boolean preemptive;
 
+    /** True if this algorithm should consider a process's priority during scheduling.
+	Not all algorithms will use this, but all must support the getter/setter functions.*/
+    protected boolean priority;
+
     /** The currently running process, null if none. */
     protected Process activeJob;
 
@@ -41,7 +45,6 @@ public abstract class BaseSchedulingAlgorithm implements SchedulingAlgorithm {
     }
 
     /**
-     * Get the value of preemptive.
      * @return Value of preemptive.
      */
     public boolean isPreemptive(){
@@ -49,11 +52,23 @@ public abstract class BaseSchedulingAlgorithm implements SchedulingAlgorithm {
     }
     
     /**
-     * Set the value of preemptive.
      * @param v  Value to assign to preemptive.
      */
     public void setPreemptive(boolean  v){
 	preemptive = v;
     }
-
+ 
+    /**
+      * @return Value of priority.
+     */
+    public boolean isPriority(){
+	return priority;
+    }
+    
+    /**
+      * @param v  Value to assign to priority.
+     */
+    public void setPriority(boolean  v){
+	priority = v;
+    }
 }

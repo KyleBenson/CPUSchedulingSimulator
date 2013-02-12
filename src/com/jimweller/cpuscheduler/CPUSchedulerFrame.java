@@ -256,10 +256,10 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    repaint();
 	}
 	else if( e.getSource() == priCB){
-	    cpu.setPriority( (! cpu.getPriority()) );
+	    cpu.getAlgorithm().setPriority(priCB.getState());
 	}
 	else if( e.getSource() == preemptCB){
-	    cpu.setPreemption(  preemptCB.getState() );
+	    cpu.getAlgorithm().setPreemptive(preemptCB.getState());
 	}
 	else if( e.getSource() == showHiddenCB){
 	    ProcessPanel.setShowHidden( showHiddenCB.getState() );
@@ -603,16 +603,15 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 
 	// Priority menu option
 	priCB = new JCheckBoxMenuItem("Prioritize");
-	priCB.setToolTipText("Use priority scheduling for"+
-			     " the Round Robin algorithm");
-	priCB.setEnabled(false);
+	priCB.setToolTipText("Use priority scheduling for algorithms supporting that feature.");
+	priCB.setEnabled(true);
 	priCB.addActionListener(this);
 	optionsMenu.add(priCB);
 	// Preemptive menu option
 	preemptCB = new JCheckBoxMenuItem("Preemption");
 	preemptCB.setToolTipText("Preempt running process"+
-				 " in the SJF and Priority algorithms.");
-	preemptCB.setEnabled(false);
+				 " in algorithms supporting that feature.");
+	preemptCB.setEnabled(true);
 	preemptCB.addActionListener(this);
 	optionsMenu.add(preemptCB);
 	

@@ -16,7 +16,7 @@ public class SJFSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
     SJFSchedulingAlgorithm(){
 	activeJob = null;
-	preemptive = true;
+	preemptive = false;
 	jobs = new Vector<Process>();
     }
 

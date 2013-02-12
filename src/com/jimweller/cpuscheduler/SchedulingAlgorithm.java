@@ -30,14 +30,22 @@ public interface SchedulingAlgorithm {
     public String getName();
 
     /**
-     * Get the value of preemptive.
-     * @return Value of preemptive.
+      * @return Value of preemptive.
      */
     public boolean isPreemptive();
     
     /**
-     * Set the value of preemptive.
-     * @param v  Value to assign to preemptive.
+      * @param v  Value to assign to preemptive.
      */
+
     public void setPreemptive(boolean  v);
+    /**
+      * @return Value of preemptive.
+     */
+    public boolean isPriority();
+    
+    /**
+      * @param v  Value to assign to priority.
+     */
+    public void setPriority(boolean  v);
 }

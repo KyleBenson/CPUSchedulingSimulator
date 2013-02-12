@@ -17,7 +17,7 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
     PrioritySchedulingAlgorithm(){
 	activeJob = null;
 	jobs = new Vector<Process>();
-	preemptive = true;
+	preemptive = false;
     }
 
     /** Add the new job to the correct queue.*/
