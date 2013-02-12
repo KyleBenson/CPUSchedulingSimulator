@@ -670,8 +670,6 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    } catch (InstantiationException e) {}
 	    catch (IllegalAccessException e) {}
 	}
-	//algs.add(new RandomSchedulingAlgorithm());
-	//algs.add(new RoundRobinSchedulingAlgorithm());
     }
 
     

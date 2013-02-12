@@ -10,7 +10,7 @@ package com.jimweller.cpuscheduler;
 
 import java.util.*;
 
-public class RandomSchedulingAlgorithm implements SchedulingAlgorithm {
+public class RandomSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
     private Vector<Process> jobs;
     private Random rand;
@@ -28,7 +28,6 @@ public class RandomSchedulingAlgorithm implements SchedulingAlgorithm {
     /** Returns true if the job was present and was removed. */
     public boolean removeJob(Process p){
 	return jobs.remove(p);
-
     }
 
     public boolean shouldPreempt(long currentTime){
@@ -37,7 +36,8 @@ public class RandomSchedulingAlgorithm implements SchedulingAlgorithm {
 
     /** Returns the next process that should be run by the CPU, null if none available.*/
     public Process getNextJob(){
-	return jobs.get(rand.nextInt(jobs.size()));
+	activeJob = jobs.get(rand.nextInt(jobs.size()));
+	return activeJob;
     }
 
     public String getName(){

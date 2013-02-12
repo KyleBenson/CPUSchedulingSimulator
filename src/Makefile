@@ -4,7 +4,7 @@ SCHEDULING_ALGORITHMS =  RandomSchedulingAlgorithm.java RoundRobinSchedulingAlgo
 
 #Build up SOURCES to include all java files in the package directory with full relative pathnames
 PACKAGE_DIR = com/jimweller/cpuscheduler
-RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java JunkGenerator.java MainApp.java Process.java ProcessPanel.java StatsPanel.java SchedulingAlgorithm.java
+RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java JunkGenerator.java MainApp.java Process.java ProcessPanel.java StatsPanel.java SchedulingAlgorithm.java BaseSchedulingAlgorithm.java
 RAW_SOURCES += $(SCHEDULING_ALGORITHMS)
 SOURCES = $(foreach s, $(RAW_SOURCES), $(PACKAGE_DIR)/$(s))
 PICS_DIR = ~/repos/CPUSchedulingSimulator/pics/
@@ -29,10 +29,10 @@ tarfile:
 	cd ..; tar -czf	../cpu.tar.gz *;mv ../cpu.tar.gz .
 
 clean:
+	rm -rf $(PACKAGE_DIR)/*.class
 	mv ../javadocs/CVS ../javadocs/.CVS
 	rm -rf *.class ../cpu.jar ../cpu.tar.gz ../javadocs/*
 	mv ../javadocs/.CVS ../javadocs/CVS
-	rm -rf *.class
 
 run:
 	java -cp $(CLASSPATH) com.jimweller.cpuscheduler.MainApp

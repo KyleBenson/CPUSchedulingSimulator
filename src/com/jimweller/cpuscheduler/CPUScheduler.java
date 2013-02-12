@@ -14,7 +14,6 @@ import java.text.*;
     @version 0.50 */
 
 public class CPUScheduler{
-
     /** Which scheduling algorithm is in use currently */
     private SchedulingAlgorithm schedulingAlgorithm = new RandomSchedulingAlgorithm();
 
@@ -37,9 +36,6 @@ public class CPUScheduler{
 
     /** the number of jobs that have been executed to completion. */
     private int procsOut=0;
-
-    /** Whether to use premption for the SJF and Priority algorithms. */
-    private boolean preemptive=false;
 
     /** Whether to use priority weights for the round robin algorithm. */
     private boolean priority=false;
@@ -157,7 +153,7 @@ public class CPUScheduler{
     void Schedule(){
 	Process p=null;
 
-	if (schedulingAlgorithm.shouldPreempt(currentTime)){
+	if (schedulingAlgorithm.shouldPreempt(currentTime) || currentTime == 0){
 	    activeJob = schedulingAlgorithm.getNextJob();
 	}
 	//try {
@@ -467,13 +463,13 @@ public class CPUScheduler{
      * Get the value of preemptive.
      * @return Value of preemptive.
      */
-    public boolean getPreemption() {return preemptive;}
+    public boolean getPreemption() {return schedulingAlgorithm.isPreemptive();}
     
     /**
      * Set the value of preemptive.
      * @param v  Value to assign to preemptive.
      */
-    public void setPreemption(boolean  v) {this.preemptive = v;}
+    public void setPreemption(boolean  v) {this.schedulingAlgorithm.setPreemptive(v);}
     
     /**
      * Set the value of algorithm.

@@ -11,9 +11,8 @@
 package com.jimweller.cpuscheduler;
 
 public interface SchedulingAlgorithm {
-
     /** Add the new job to the correct queue.*/
-    abstract public void addJob(Process p);
+    public void addJob(Process p);
     
     /** Returns true if the job was present and was removed. */
     public boolean removeJob(Process p);
@@ -24,6 +23,21 @@ public interface SchedulingAlgorithm {
     /** Returns true if it is time to switch to another process. */
     public boolean shouldPreempt(long currentTime);
 
+    /** Returns true if the current job is finished or there is no such job. */
+    public boolean isJobFinished();
+
     /** Return a human-readable name for the algorithm. */
     public String getName();
+
+    /**
+     * Get the value of preemptive.
+     * @return Value of preemptive.
+     */
+    public boolean isPreemptive();
+    
+    /**
+     * Set the value of preemptive.
+     * @param v  Value to assign to preemptive.
+     */
+    public void setPreemptive(boolean  v);
 }
