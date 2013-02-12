@@ -1,43 +1,3 @@
-    /** 
-     * RR: get the next job we should run (could be the one we're running).
-     */
-    Process findNextJob(Vector que){
-	Process p = null , nextJob = null;
-	int index=0;
-	
-	// All right who's next?  (index)
-	if( activeIndex >= (que.size() - 1) )
-	    index = 0;
-	else if( activeJob != null && activeJob.isFinished() ){
-	    index = activeIndex;
-	}
-	else{
-		index = (activeIndex + 1);
-	}
-	
-	nextJob = (Process) que.get(index);
-
-	return nextJob;
-    }
-
-
-	String s="";
-	switch( algorithm ){
-	case FCFS :
-	    s = "First come first serve";
-	    break;
-	case SJF :
-	    s = "Shortest job first";
-	    break;
-	case PRIORITY :
-	    s = "Priority Weighted";
-	    break;
-	case ROUNDROBIN :
-	    s = "Round Robin";
-	    break;
-	default:
-	    break;
-	}
 
     /**
      * SJF: Locate the smallest job in a queue 
@@ -56,25 +16,6 @@
 	}
 	return shortest;
     }
-
-    /** 
-     * FCFS: Get the job that got here first 
-     */
-    Process findEarliestJob(Vector que){
-	Process p=null,earliest=null;
-	long time=0,arrTime=0;
-	
-	for(int i=0; i < que.size(); ++i){
-	    p = (Process) que.get(i);
-	    time = p.getArrivalTime();
-	    if( (time < arrTime) || (i == 0) ){
-		arrTime = time;
-		earliest = p;
-	    }
-	}
-	return earliest ;
-    }
-
     
     /** 
      * find the job with the highest priority
@@ -95,22 +36,6 @@
 	return loftiest;
     }
 		
-
-
-    /** Do the FCFS scheduling algorithm */
-    void RunFCFS(Vector jq){
-	Process p;
-	
-	try {
-	    if(  busy == 0 || activeJob.getBurstTime() == 0 ){
-		activeJob = findEarliestJob(jq);
-		activeIndex = jq.indexOf(activeJob);
-	    }
-	}
-	catch( NullPointerException e){
-	}
-    }
-
 
     /** Do the SJF scheduling algorithm. */
     void RunSJF(Vector jq){
