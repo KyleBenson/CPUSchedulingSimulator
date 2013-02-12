@@ -1,14 +1,14 @@
 # add your scheduling algorithms here!
-SCHEDULING_ALGORITHMS =  RandomSchedulingAlgorithm.java RoundRobinSchedulingAlgorithm.java FCFSSchedulingAlgorithm.java
+SCHEDULING_ALGORITHMS =  RandomSchedulingAlgorithm.java RoundRobinSchedulingAlgorithm.java FCFSSchedulingAlgorithm.java SJFSchedulingAlgorithm.java PrioritySchedulingAlgorithm.java
 ############################################
 
 #Build up SOURCES to include all java files in the package directory with full relative pathnames
-PACKAGE_DIR = com/jimweller/cpuscheduler
+PACKAGE_DIR = src/com/jimweller/cpuscheduler
 RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java JunkGenerator.java MainApp.java Process.java ProcessPanel.java StatsPanel.java SchedulingAlgorithm.java BaseSchedulingAlgorithm.java
 RAW_SOURCES += $(SCHEDULING_ALGORITHMS)
 SOURCES = $(foreach s, $(RAW_SOURCES), $(PACKAGE_DIR)/$(s))
-PICS_DIR = ~/repos/CPUSchedulingSimulator/pics/
-CLASSPATH = $(PICS_DIR):.:$(PACKAGE_DIR):lib/reflections.jar:lib/dom4j-1.6.1.jar:lib/gson-1.4.jar:lib/guava-r08.jar:lib/javassist-3.12.1.GA.jar:lib/jboss-vfs-3.0.0.CR5.jar:lib/slf4j-api-1.6.1.jar:lib/slf4j-simple-1.6.1.jar:lib/xml-apis-1.0.b2.jar
+PICS_DIR = src/pics
+CLASSPATH = $(PICS_DIR):.:$(PACKAGE_DIR):src/lib/reflections.jar:src/lib/dom4j-1.6.1.jar:src/lib/gson-1.4.jar:src/lib/guava-r08.jar:src/lib/javassist-3.12.1.GA.jar:src/lib/jboss-vfs-3.0.0.CR5.jar:src/lib/slf4j-api-1.6.1.jar:src/lib/slf4j-simple-1.6.1.jar:src/lib/xml-apis-1.0.b2.jar
 
 all: classes javadocs tarfile jarfile
 

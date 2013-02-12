@@ -364,6 +364,7 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 		    SchedulingAlgorithm newAlg = algs.get(i);
 		    cpu.setAlgorithm(newAlg);
 		    algolLbl.setText(newAlg.getName());
+		    break;
 		}
 	    }
 	}
@@ -512,7 +513,6 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 
 	ButtonGroup algogroup = new ButtonGroup();
 
-	//TODO: auto-do this
 	algButtons = new Vector<JRadioButtonMenuItem>();
 
 	boolean setFirst = false;
@@ -523,8 +523,6 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    algogroup.add(newButton);
 	    algorithmMenu.add(newButton);
 	    algButtons.add(newButton);
-	    //if (!setFirst)
-	    //	newButton.setSelected(true);
 	}
 
 	optionsMenu.add(algorithmMenu);
@@ -643,9 +641,9 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
      * Build the buttons for the applications 
      */
     void buildButtons(){
-	playPic  = new ImageIcon("../pics/play.gif","play");
-	pausePic  = new ImageIcon("../pics/pause.gif","pause");
-	pressPic  = new ImageIcon("../pics/press.gif","press");
+	playPic  = new ImageIcon("src/pics/play.gif","play");
+	pausePic  = new ImageIcon("src/pics/pause.gif","pause");
+	pressPic  = new ImageIcon("src/pics/press.gif","press");
 
 	startCB = new JCheckBox(playPic,false);
 	startCB.addActionListener(this);
