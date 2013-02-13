@@ -32,6 +32,17 @@ public class SJFSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	return jobs.remove(p);
     }
 
+    /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
+	when switching to another algorithm in the GUI */
+    public void transferJobsTo(SchedulingAlgorithm otherAlg) {
+	for (int i = jobs.size()-1; i >= 0; i--) {
+	    Process job = this.jobs.get(i);
+	    this.removeJob(job);
+	    otherAlg.addJob(job);
+	}
+    }
+
+
     public boolean shouldPreempt(long currentTime){
 	return ((activeJob == null) || isPreemptive());
     }

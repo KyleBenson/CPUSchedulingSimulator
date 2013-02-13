@@ -27,6 +27,10 @@ public abstract class BaseSchedulingAlgorithm implements SchedulingAlgorithm {
     /** Returns true if the job was present and was removed. */
     public abstract boolean removeJob(Process p);
 
+    /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
+	when switching to another algorithm in the GUI */
+    public abstract void transferJobsTo(SchedulingAlgorithm otherAlg);
+
     /** Returns the next process that should be run by the CPU, null if none available.*/
     public abstract Process getNextJob(long currentTime);
 

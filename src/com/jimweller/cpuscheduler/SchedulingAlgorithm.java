@@ -26,6 +26,10 @@ public interface SchedulingAlgorithm {
     /** Return a human-readable name for the algorithm. */
     public String getName();
 
+    /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
+	when switching to another algorithm in the GUI */
+    public void transferJobsTo(SchedulingAlgorithm otherAlg);
+
     /**
       * @return Value of preemptive.
      */

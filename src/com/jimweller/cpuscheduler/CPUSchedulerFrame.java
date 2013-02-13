@@ -363,36 +363,12 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 		if( e.getSource() == algButtons.get(i)){
 		    SchedulingAlgorithm newAlg = algs.get(i);
 		    cpu.setAlgorithm(newAlg);
+		    
 		    algolLbl.setText(newAlg.getName());
 		    break;
 		}
 	    }
 	}
-	/*	else
-	    cpu.setAlgorithm(new RandomSchedulingAlgorithm());
-	    //cpu.setAlgorithm(new FCFSSchedulingAlgorithm());
-	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(false);
-	    algolLbl.setText("FCFS");
-	}
-	else if( e.getSource() == rrRB){
-	    cpu.setAlgorithm(new RoundRobinSchedulingAlgorithm());
-	    priCB.setEnabled(true);
-	    preemptCB.setEnabled(false);
-	    algolLbl.setText("RR");
-	}
-	else if( e.getSource() == sjfRB){
-	    //cpu.setAlgorithm(new SJFSchedulingAlgorithm());
-	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(true);
-	    algolLbl.setText("SJF");
-	}
-	else if( e.getSource() == priRB){
-	    //cpu.setAlgorithm(new PrioritySchedulingAlgorithm());
-	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(true);
-	    algolLbl.setText("PRI");
-	    }*/
     }
 
     /**

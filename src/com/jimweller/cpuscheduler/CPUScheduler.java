@@ -454,6 +454,7 @@ public class CPUScheduler {
 	 *            The algorithm to use for this simualtion.
 	 */
 	public void setAlgorithm(SchedulingAlgorithm algo) {
+	    schedulingAlgorithm.transferJobsTo(algo);
 		schedulingAlgorithm = algo;
 	}
 

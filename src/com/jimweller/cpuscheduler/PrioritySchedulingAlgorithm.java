@@ -36,6 +36,17 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	return ((activeJob == null) || isPreemptive());
     }
 
+    /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
+	when switching to another algorithm in the GUI */
+    public void transferJobsTo(SchedulingAlgorithm otherAlg) {
+	for (int i = jobs.size()-1; i >= 0; i--) {
+	    Process job = this.jobs.get(i);
+	    this.removeJob(job);
+	    otherAlg.addJob(job);
+	}
+    }
+
+
     /** Returns the next process that should be run by the CPU, null if none available.*/
     public Process getNextJob(long currentTime){
 	Process p=null,loftiest=null;
