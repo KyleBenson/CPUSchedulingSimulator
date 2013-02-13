@@ -37,7 +37,7 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
     }
 
     /** Returns the next process that should be run by the CPU, null if none available.*/
-    public Process getNextJob(){
+    public Process getNextJob(long currentTime){
 	Process p=null,loftiest=null;
 	long priority=0, highest=0;
 	

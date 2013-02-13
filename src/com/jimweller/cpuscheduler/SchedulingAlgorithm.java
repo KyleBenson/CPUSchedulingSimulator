@@ -18,10 +18,7 @@ public interface SchedulingAlgorithm {
     public boolean removeJob(Process p);
 
     /** Returns the next process that should be run by the CPU, null if none available.*/
-    public Process getNextJob();
-
-    /** Returns true if it is time to switch to another process. */
-    public boolean shouldPreempt(long currentTime);
+    public Process getNextJob(long currentTime);
 
     /** Returns true if the current job is finished or there is no such job. */
     public boolean isJobFinished();

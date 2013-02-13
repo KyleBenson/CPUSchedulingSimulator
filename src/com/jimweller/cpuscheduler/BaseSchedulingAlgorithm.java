@@ -27,11 +27,8 @@ public abstract class BaseSchedulingAlgorithm implements SchedulingAlgorithm {
     /** Returns true if the job was present and was removed. */
     public abstract boolean removeJob(Process p);
 
-    /** Returns true if it is time to switch to another process. */
-    public abstract boolean shouldPreempt(long currentTime);
-
     /** Returns the next process that should be run by the CPU, null if none available.*/
-    public abstract Process getNextJob();
+    public abstract Process getNextJob(long currentTime);
 
     /** Return a human-readable name for the algorithm. */
     public abstract String getName();

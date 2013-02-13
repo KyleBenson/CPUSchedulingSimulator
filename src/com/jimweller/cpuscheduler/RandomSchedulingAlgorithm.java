@@ -31,12 +31,8 @@ public class RandomSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	return jobs.remove(p);
     }
 
-    public boolean shouldPreempt(long currentTime){
-	return true;
-    }
-
     /** Returns the next process that should be run by the CPU, null if none available.*/
-    public Process getNextJob(){
+    public Process getNextJob(long currentTime){
 	activeJob = jobs.get(rand.nextInt(jobs.size()));
 	return activeJob;
     }

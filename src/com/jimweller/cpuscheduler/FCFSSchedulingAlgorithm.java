@@ -36,7 +36,7 @@ public class FCFSSchedulingAlgorithm extends BaseSchedulingAlgorithm {
     }
 
     /** Returns the next process that should be run by the CPU, null if none available.*/
-    public Process getNextJob(){
+    public Process getNextJob(long currentTime){
 	Process p=null,earliest=null;
 	long time=0,arrTime=0;
 	

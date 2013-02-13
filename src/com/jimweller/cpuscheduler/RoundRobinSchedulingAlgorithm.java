@@ -89,10 +89,18 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
      * Returns the next process that should be run by the CPU, null if none
      * available.
      */
-    public Process getNextJob() {
+    public Process getNextJob(long currentTime) {
 	Process p = null, nextJob = null;
 	int index = 0;
 
+	quantumCounter--; //hint: this gets called every tick of the CPU clock
+
+	//not time to preempt
+	if (activeIndex >= 0 && !isJobFinished() && quantumCounter >= 0) {
+	    return activeJob;
+	}
+
+	//no jobs available
 	if (jobs.size() == 0){
 	    activeIndex = -1;
 	    return null;
@@ -119,14 +127,6 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
 	this.activeJob = nextJob;
 	return nextJob;
-    }
-
-    /** Returns true if it is time to switch to another process. */
-    public boolean shouldPreempt(long currentTime) {
-	// lastTime = currentTime;
-	boolean ret = (activeIndex < 0 || isJobFinished() || quantumCounter == 0);
-	quantumCounter--;
-	return ret;
     }
 
     public String getName() {

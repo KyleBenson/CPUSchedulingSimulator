@@ -169,19 +169,7 @@ public class CPUScheduler {
 	 */
 	void Schedule() {
 		Process p = null;
-
-		if (schedulingAlgorithm.shouldPreempt(currentTime) || currentTime == 0) {
-			activeJob = schedulingAlgorithm.getNextJob();
-		}
-		// try {
-		// if( activeJob.isFinished() || busy == 0 /*just starting sim*/){
-		// activeJob = schedulingAlgorithm.getNextJob();
-		/*
-		 * if (activeJob == null){ System.out.println("no job");
-		 * System.exit(-1); } activeIndex = readyQueue.indexOf(activeJob); } }
-		 * catch( NullPointerException e){ }
-		 */
-
+		activeJob = schedulingAlgorithm.getNextJob(currentTime);
 		Dispatch();
 	}
 
