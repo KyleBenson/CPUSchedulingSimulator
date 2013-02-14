@@ -35,7 +35,6 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
     private boolean priority;
 
     RoundRobinSchedulingAlgorithm() {
-	preemptive = true;
 	activeJob = null;
 	quantum = 10;
 	turnCounter = 0;

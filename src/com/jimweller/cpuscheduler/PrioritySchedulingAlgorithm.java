@@ -10,14 +10,13 @@ package com.jimweller.cpuscheduler;
 
 import java.util.*;
 
-public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
-
+public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm implements OptionallyPreemptiveSchedulingAlgorithm {
+    private boolean preemptive;
     private Vector<Process> jobs;
 
     PrioritySchedulingAlgorithm(){
 	activeJob = null;
 	jobs = new Vector<Process>();
-	preemptive = false;
     }
 
     /** Add the new job to the correct queue.*/
@@ -30,10 +29,6 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	if (p == activeJob)
 	    activeJob = null;
 	return jobs.remove(p);
-    }
-
-    public boolean shouldPreempt(long currentTime){
-	return ((activeJob == null) || isPreemptive());
     }
 
     /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
@@ -66,5 +61,19 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
     public String getName(){
 	return "Single-queue Priority";
+    }
+
+    /**
+     * @return Value of preemptive.
+     */
+    public boolean isPreemptive(){
+	return preemptive;
+    }
+    
+    /**
+     * @param v  Value to assign to preemptive.
+     */
+    public void setPreemptive(boolean  v){
+	preemptive = v;
     }
 }

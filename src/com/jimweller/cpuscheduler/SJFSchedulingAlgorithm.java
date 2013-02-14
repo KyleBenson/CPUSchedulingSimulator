@@ -10,8 +10,8 @@ package com.jimweller.cpuscheduler;
 
 import java.util.*;
 
-public class SJFSchedulingAlgorithm extends BaseSchedulingAlgorithm {
-
+public class SJFSchedulingAlgorithm extends BaseSchedulingAlgorithm implements OptionallyPreemptiveSchedulingAlgorithm {
+    private boolean preemptive;
     private Vector<Process> jobs;
 
     SJFSchedulingAlgorithm(){
@@ -66,5 +66,19 @@ public class SJFSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
     public String getName(){
 	return "Shortest job first";
+    }
+
+    /**
+     * @return Value of preemptive.
+     */
+    public boolean isPreemptive(){
+	return preemptive;
+    }
+    
+    /**
+     * @param v  Value to assign to preemptive.
+     */
+    public void setPreemptive(boolean  v){
+	preemptive = v;
     }
 }
