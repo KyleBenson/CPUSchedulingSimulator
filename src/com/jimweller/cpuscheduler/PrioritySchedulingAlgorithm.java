@@ -46,6 +46,9 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm impleme
     public Process getNextJob(long currentTime){
 	Process p=null,loftiest=null;
 	long priority=0, highest=0;
+
+	if (!isJobFinished() && !isPreemptive())
+	    return activeJob;
 	
 	for(int i=0; i < jobs.size(); ++i){
 	    p = (Process) jobs.get(i);

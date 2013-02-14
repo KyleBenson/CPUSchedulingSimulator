@@ -42,15 +42,13 @@ public class SJFSchedulingAlgorithm extends BaseSchedulingAlgorithm implements O
 	}
     }
 
-
-    public boolean shouldPreempt(long currentTime){
-	return ((activeJob == null) || isPreemptive());
-    }
-
     /** Returns the next process that should be run by the CPU, null if none available.*/
     public Process getNextJob(long currentTime){
 	Process p=null,shortest=null;
 	long time=0,shorttime=0;
+	
+	if (!isJobFinished() && !isPreemptive())
+	    return activeJob;
 	
 	for(int i=0; i < jobs.size(); ++i){
 	    p = (Process) jobs.get(i);
