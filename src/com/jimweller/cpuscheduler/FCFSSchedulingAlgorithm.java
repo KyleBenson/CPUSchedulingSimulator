@@ -35,7 +35,7 @@ public class FCFSSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	when switching to another algorithm in the GUI */
     public void transferJobsTo(SchedulingAlgorithm otherAlg) {
 	for (int i = jobs.size()-1; i >= 0; i--) {
-	    Process job = this.jobs.get(i);
+	    Process job = this.jobs.get(0);
 	    this.removeJob(job);
 	    otherAlg.addJob(job);
 	}

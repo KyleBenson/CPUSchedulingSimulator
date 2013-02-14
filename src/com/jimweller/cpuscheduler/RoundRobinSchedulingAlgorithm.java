@@ -15,13 +15,13 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
     private Vector<Process> jobs;
 
     /** the timeslice each process gets */
-    private long quantum;
+    private int quantum;
 
     /**
      * A count down to when to interrupt a process because it's timeslice is
      * over.
      */
-    private long quantumCounter;
+    private int quantumCounter;
 
     /**
      * this variable keeps track of the number of consecutive timeslices a
@@ -70,7 +70,7 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	when switching to another algorithm in the GUI */
     public void transferJobsTo(SchedulingAlgorithm otherAlg) {
 	for (int i = jobs.size()-1; i >= 0; i--) {
-	    Process job = this.jobs.get(i);
+	    Process job = this.jobs.get(0);
 	    this.removeJob(job);
 	    otherAlg.addJob(job);
 	}
@@ -81,7 +81,7 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
      * 
      * @return Value of quantum.
      */
-    public long getQuantum() {
+    public int getQuantum() {
 	return quantum;
     }
 
@@ -91,7 +91,7 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
      * @param v
      *            Value to assign to quantum.
      */
-    public void setQuantum(long v) {
+    public void setQuantum(int v) {
 	this.quantum = v;
     }
 

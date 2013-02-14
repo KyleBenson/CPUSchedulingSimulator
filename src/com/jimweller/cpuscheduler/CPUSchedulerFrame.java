@@ -37,6 +37,7 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
     Vector<JRadioButtonMenuItem> algButtons;
 
     JCheckBox startCB;
+    JTextField quantumField;
     ImageIcon playPic, pausePic, pressPic;
 
 
@@ -107,7 +108,7 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	middleRow.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
 	JPanel bottomRow = new JPanel();
-	bottomRow.setLayout(new BoxLayout(bottomRow,BoxLayout.Y_AXIS));
+	bottomRow.setLayout(new FlowLayout(FlowLayout.CENTER));
 	bottomRow.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
 
@@ -119,12 +120,13 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	middleRow.add(turnSP);
 	middleRow.add(waitSP);
 
-	bottomRow.add(middleRow,"Center");
-	bottomRow.add(startCB,"South");
-
+	//bottomRow.add(middleRow);
+	bottomRow.add(startCB);
+	bottomRow.add(new JLabel("Quantum"));
+	bottomRow.add(quantumField);
 
 	masterPanel.add(topRow);
-	//masterPanel.add(middleRow);
+	masterPanel.add(middleRow);
 	masterPanel.add(bottomRow);
 
 	addWindowListener(
@@ -362,13 +364,22 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    for (int i = 0; i < algButtons.size(); i++){
 		if( e.getSource() == algButtons.get(i)){
 		    SchedulingAlgorithm newAlg = algs.get(i);
+
+		    //set quantum if RR alg
+		    try {
+			RoundRobinSchedulingAlgorithm RR = (RoundRobinSchedulingAlgorithm)newAlg;
+			RR.setQuantum(Integer.parseInt(quantumField.getText()));
+		    }
+		    catch (Exception exc){}
+
 		    cpu.setAlgorithm(newAlg);
-		    
 		    algolLbl.setText(newAlg.getName());
 		    break;
 		}
 	    }
 	}
+
+	//unrecognized
     }
 
     /**
@@ -583,6 +594,7 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	priCB.setEnabled(true);
 	priCB.addActionListener(this);
 	optionsMenu.add(priCB);
+
 	// Preemptive menu option
 	preemptCB = new JCheckBoxMenuItem("Preemption");
 	preemptCB.setToolTipText("Preempt running process"+
@@ -627,6 +639,10 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	startCB.setBorder(new EmptyBorder(0,0,0,0));
 	startCB.setToolTipText("Play/Pause");
 	startCB.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+	quantumField = new JTextField("10", 10);
+	quantumField.setToolTipText("Quantum");
+	startCB.setAlignmentX(Component.RIGHT_ALIGNMENT);
     }
 
     /**
