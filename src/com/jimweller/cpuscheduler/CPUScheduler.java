@@ -372,8 +372,8 @@ public class CPUScheduler {
 	public void printCSV() {
 		Process p;
 		System.out.println(getAlgorithmName() + ","
-				+ (getPriority() ? "Priority," : ",")
-				+ (getPreemption() ? "Preemptive" : ""));
+				   + (getPriority() ? "Priority," : ","));
+				   //+ (getPreemption() ? "Preemptive" : ""));
 		System.out.println("\"PID\"," + "\"Burst\"," + "\"Priority\","
 				+ "\"Arrival\"," + "\"Start\"," + "\"Finish\"," + "\"Wait\","
 				+ "\"Response\"," + "\"Turnaround\"");
@@ -402,8 +402,8 @@ public class CPUScheduler {
 	public void printCSV(PrintWriter pw) {
 		Process p;
 		pw.println(getAlgorithmName() + ","
-				+ (getPriority() ? "Priority," : ",")
-				+ (getPreemption() ? "Preemptive" : ""));
+			   + (getPriority() ? "Priority," : ","));
+			   //+ (getPreemption() ? "Preemptive" : ""));
 		pw.println("\"PID\"," + "\"Burst\"," + "\"Priority\"," + "\"Arrival\","
 				+ "\"Start\"," + "\"Finish\"," + "\"Wait\"," + "\"Response\","
 				+ "\"Turnaround\"");
@@ -426,25 +426,6 @@ public class CPUScheduler {
 				+ maxTurn);
 		pw.println(",,,,," + "StdDev," + nf.format(sDevWait) + ","
 				+ nf.format(sDevResponse) + "," + nf.format(sDevTurn));
-	}
-
-	/**
-	 * Get the value of preemptive.
-	 * 
-	 * @return Value of preemptive.
-	 */
-	public boolean getPreemption() {
-		return schedulingAlgorithm.isPreemptive();
-	}
-
-	/**
-	 * Set the value of preemptive.
-	 * 
-	 * @param v
-	 *            Value to assign to preemptive.
-	 */
-	public void setPreemption(boolean v) {
-		this.schedulingAlgorithm.setPreemptive(v);
 	}
 
 	/**

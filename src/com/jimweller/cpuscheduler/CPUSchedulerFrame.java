@@ -257,11 +257,15 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    } 
 	    repaint();
 	}
-	else if( e.getSource() == priCB){
+	/*else if( e.getSource() == priCB){
 	    cpu.getAlgorithm().setPriority(priCB.getState());
-	}
+	    }*/
 	else if( e.getSource() == preemptCB){
-	    cpu.getAlgorithm().setPreemptive(preemptCB.getState());
+	    try {
+		OptionallyPreemptiveSchedulingAlgorithm sjfAlg = (OptionallyPreemptiveSchedulingAlgorithm)cpu.getAlgorithm();
+		sjfAlg.setPreemptive(preemptCB.getState());
+	    }
+	    catch (Exception exc) {}
 	}
 	else if( e.getSource() == showHiddenCB){
 	    ProcessPanel.setShowHidden( showHiddenCB.getState() );
@@ -371,6 +375,15 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 			RR.setQuantum(Integer.parseInt(quantumField.getText()));
 		    }
 		    catch (Exception exc){}
+
+		    //make preempt button work if SJF alg
+		    try {
+			OptionallyPreemptiveSchedulingAlgorithm sjfAlg = (OptionallyPreemptiveSchedulingAlgorithm)newAlg;
+			preemptCB.setEnabled(true);
+		    }
+		    catch (Exception exc) {
+			preemptCB.setEnabled(false);
+		    }
 
 		    cpu.setAlgorithm(newAlg);
 		    algolLbl.setText(newAlg.getName());
@@ -593,13 +606,13 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	priCB.setToolTipText("Use priority scheduling for algorithms supporting that feature.");
 	priCB.setEnabled(true);
 	priCB.addActionListener(this);
-	optionsMenu.add(priCB);
+	//optionsMenu.add(priCB);
 
 	// Preemptive menu option
 	preemptCB = new JCheckBoxMenuItem("Preemption");
 	preemptCB.setToolTipText("Preempt running process"+
 				 " in algorithms supporting that feature.");
-	preemptCB.setEnabled(true);
+	preemptCB.setEnabled(false);
 	preemptCB.addActionListener(this);
 	optionsMenu.add(preemptCB);
 	

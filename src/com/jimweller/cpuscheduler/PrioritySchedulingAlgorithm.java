@@ -8,12 +8,10 @@
  */
 package com.jimweller.cpuscheduler;
 
-import java.util.*;
-
-public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
+public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm implements OptionallyPreemptiveSchedulingAlgorithm {
+    private boolean preemptive;
 
     PrioritySchedulingAlgorithm(){
-	super();
     }
 
     /** Add the new job to the correct queue.*/
@@ -26,10 +24,6 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
     }
 
-    public boolean shouldPreempt(long currentTime){
-
-    }
-
     /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
 	when switching to another algorithm in the GUI */
     public void transferJobsTo(SchedulingAlgorithm otherAlg) {
@@ -39,9 +33,24 @@ public class PrioritySchedulingAlgorithm extends BaseSchedulingAlgorithm {
 
     /** Returns the next process that should be run by the CPU, null if none available.*/
     public Process getNextJob(long currentTime){
+
     }
 
     public String getName(){
 	return "Single-queue Priority";
+    }
+
+    /**
+     * @return Value of preemptive.
+     */
+    public boolean isPreemptive(){
+	return preemptive;
+    }
+    
+    /**
+     * @param v  Value to assign to preemptive.
+     */
+    public void setPreemptive(boolean  v){
+	preemptive = v;
     }
 }

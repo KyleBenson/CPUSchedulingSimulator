@@ -244,7 +244,7 @@ public class CPUSchedulerFrameForApplet extends JFrame implements ActionListener
 	else if( e.getSource() == fcfsRB){
 	    //cpu.setAlgorithm(new FCFSSchedulingAlgorithm());
 	    priCB.setEnabled(false);
-	    preemptCB.setEnabled(false);
+	    //preemptCB.setEnabled(false);
 	    algolLbl.setText("FCFS");
 	}
 	else if( e.getSource() == rrRB){
@@ -269,7 +269,7 @@ public class CPUSchedulerFrameForApplet extends JFrame implements ActionListener
 	    cpu.setPriority( (! cpu.getPriority()) );
 	}
 	else if( e.getSource() == preemptCB){
-	    cpu.setPreemption(  preemptCB.getState() );
+	    //cpu.setPreemption(  preemptCB.getState() );
 	}
 	else if( e.getSource() == showHiddenCB){
 	    ProcessPanel.setShowHidden( showHiddenCB.getState() );

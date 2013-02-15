@@ -29,24 +29,4 @@ public interface SchedulingAlgorithm {
     /** Transfer all the jobs in the queue of a SchedulingAlgorithm to another, such as
 	when switching to another algorithm in the GUI */
     public void transferJobsTo(SchedulingAlgorithm otherAlg);
-
-    /**
-      * @return Value of preemptive.
-     */
-    public boolean isPreemptive();
-    
-    /**
-      * @param v  Value to assign to preemptive.
-     */
-
-    public void setPreemptive(boolean  v);
-    /**
-      * @return Value of preemptive.
-     */
-    public boolean isPriority();
-    
-    /**
-      * @param v  Value to assign to priority.
-     */
-    public void setPriority(boolean  v);
 }
