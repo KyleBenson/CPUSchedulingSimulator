@@ -3,7 +3,8 @@ SCHEDULING_ALGORITHMS =  RandomSchedulingAlgorithm.java FCFSSchedulingAlgorithm.
 ############################################
 
 #Build up SOURCES to include all java files in the package directory with full relative pathnames
-PACKAGE_DIR = src/com/jimweller/cpuscheduler
+PACKAGE = com/jimweller/cpuscheduler
+PACKAGE_DIR = src/$(PACKAGE)
 RAW_SOURCES = ClockPanel.java BetterFileFilter.java CPUScheduler.java CPUSchedulerFrame.java CPUSchedulerFrameForApplet.java JunkApplet.java JunkGenerator.java MainApp.java Process.java ProcessPanel.java StatsPanel.java SchedulingAlgorithm.java BaseSchedulingAlgorithm.java
 RAW_SOURCES += $(SCHEDULING_ALGORITHMS)
 SOURCES = $(foreach s, $(RAW_SOURCES), $(PACKAGE_DIR)/$(s))
@@ -21,9 +22,12 @@ javadocs: classes
 	javadoc -private -version -author -d ../javadocs/ *.java > ../javadocs/javadoc.log 2>&1
 
 jarfile:
-	mkdir -p $(PACKAGE_DIR)
-	cp -a *.class pics $(PACKAGE_DIR)
-	jar	cfm ../cpu.jar manifest.txt com 
+	rm -rf $(PACKAGE)
+	mkdir -p $(PACKAGE)/src/
+#	cp -a src/pics $(PACKAGE)/src/
+#	cp -a src/lib/* $(PACKAGE)/src
+	cp -a bin/$(PACKAGE)/*.class $(PACKAGE)
+	jar -cvfm CPUSchedulingSimulator.jar src/manifest.txt $(PACKAGE)/*.class src/pics src/lib
 
 tarfile:
 	cd ..; tar -czf	../cpu.tar.gz *;mv ../cpu.tar.gz .

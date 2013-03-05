@@ -105,7 +105,7 @@ public class RoundRobinSchedulingAlgorithm extends BaseSchedulingAlgorithm {
 	quantumCounter--; //hint: this gets called every tick of the CPU clock
 
 	//not time to preempt
-	if (activeIndex >= 0 && !isJobFinished() && quantumCounter >= 0) {
+	if (activeIndex >= 0 && !isJobFinished() && quantumCounter > 0) {
 	    return activeJob;
 	}
 
