@@ -17,7 +17,7 @@ import java.text.*;
 
 public class CPUScheduler {
 	/** Which scheduling algorithm is in use currently */
-	private SchedulingAlgorithm schedulingAlgorithm = new RandomSchedulingAlgorithm();
+	private SchedulingAlgorithm schedulingAlgorithm;
 
 	/**
 	 * The default number of processes to randomly generate. The programmer can
@@ -48,13 +48,13 @@ public class CPUScheduler {
 	 * The collection of all processes involved in this simulation. Extraneous
 	 * now but handy for debugging.
 	 */
-	private Vector allProcs = new Vector(DEF_PROC_COUNT);
+	private Vector<Process> allProcs = new Vector<Process>(DEF_PROC_COUNT);
 
 	/** The collection of all jobs that will be used */
-	private Vector jobQueue = new Vector(DEF_PROC_COUNT);
+	private Vector<Process> jobQueue = new Vector<Process>(DEF_PROC_COUNT);
 
 	/** The collection of all jobs that have arrived and require CPU time. */
-	private Vector readyQueue = new Vector(DEF_PROC_COUNT);
+	private Vector<Process> readyQueue = new Vector<Process>(DEF_PROC_COUNT);
 
 	/**
 	 * A reference to the currently active job. The cpu changes this reference
@@ -82,7 +82,10 @@ public class CPUScheduler {
 	 */
 	CPUScheduler() {
 		buildRandomQueue();
+		schedulingAlgorithm = new RandomSchedulingAlgorithm();
 	}
+	
+	
 
 	/** Empty and populate a CPUScheduler */
 	void buildRandomQueue() {
@@ -101,7 +104,7 @@ public class CPUScheduler {
 	 * Articulate constructor that allows the programmer to design his/her own
 	 * Vector of processes and use them in the scheduler
 	 */
-	CPUScheduler(Vector ap) {
+	CPUScheduler(Vector<Process> ap) {
 		activeJob = null;
 		allProcs = ap;
 		LoadJobQueue(ap);
