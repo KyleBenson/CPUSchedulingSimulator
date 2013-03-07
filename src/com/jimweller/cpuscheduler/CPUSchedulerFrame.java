@@ -239,12 +239,12 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    if(frozen == false){
 		frozen = true;
 		stopAnimation(); 
-		//startCB.setSelected(false);
+		startCB.setSelected(false);
 	    }
 	    else{
 		frozen = false;
 		startAnimation();
-		//startCB.setSelected(true);
+		startCB.setSelected(true);
 	    }
 	}
 	else if( e.getSource() == timer ){
@@ -282,17 +282,37 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	    repaint();
 	}
 	else if( e.getSource() == openMI){
+		//pause sim first
+		frozen = true;
+		stopAnimation(); 
+		startCB.setSelected(false);
+		
+		//save current algorithm so we can give it to the new CPU object
+		SchedulingAlgorithm alg = null;
+		try {
+			alg = cpu.getAlgorithm().getClass().newInstance();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	    openFileDialog.resetChoosableFileFilters();
 	    openFileDialog.setFileFilter(openFilter);
 	    int returnVal = openFileDialog.showOpenDialog(this);
 	    if(returnVal == JFileChooser.APPROVE_OPTION) { 
 	        File fileName=openFileDialog.getSelectedFile();
 	        cpu = new CPUScheduler(fileName);
-		emptyQueuePanel();
+	        emptyQueuePanel();
 	        fillQueuePanel();
-		updateReadouts();
+	        updateReadouts();
 	        repaint();
-	    } 
+	    }
+	    
+	    if (alg != null)
+	    	cpu.setAlgorithm(alg);
 	}
 	else if( e.getSource() == saveMI){
 	    openFileDialog.resetChoosableFileFilters();
@@ -319,6 +339,11 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 	}
 
 	else if( e.getSource() == resetMI){
+		//pause simulator first
+		frozen = true;
+		stopAnimation(); 
+		startCB.setSelected(false);
+		
 	    cpu.restore();
 	    resetQueuePanel();
 	    updateReadouts();

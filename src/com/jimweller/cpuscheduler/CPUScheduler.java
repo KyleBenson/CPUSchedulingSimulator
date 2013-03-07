@@ -565,6 +565,18 @@ public class CPUScheduler {
 		PurgeJobQueue();
 		PurgeReadyQueue();
 	}
+	
+	/**
+	 * Creates a new algorithm of the current type to reset it.
+	 */
+	public void resetAlgorithm() {
+		Class<? extends SchedulingAlgorithm> theAlg = schedulingAlgorithm.getClass();
+		try {
+			setAlgorithm(theAlg.newInstance());
+		} catch (Exception e) {
+			System.out.println("Error creating new algorithm!");
+		}
+	}
 
 	/**
 	 * Restore time and statisitic variables to their defaults. Also restores
@@ -600,10 +612,12 @@ public class CPUScheduler {
 			p = (Process) allProcs.get(i);
 			p.restore();
 		}
+
+		resetAlgorithm();
+		
 		jobQueue.clear();
 		readyQueue.clear();
 		LoadJobQueue(allProcs);
-
 	}
 
 	/**
