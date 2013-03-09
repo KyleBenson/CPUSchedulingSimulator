@@ -344,10 +344,24 @@ public class CPUSchedulerFrame extends JFrame implements ActionListener {
 		stopAnimation(); 
 		startCB.setSelected(false);
 		
+		//save current algorithm so we can give it to the new CPU object
+		SchedulingAlgorithm alg = null;
+		try {
+			alg = cpu.getAlgorithm().getClass().newInstance();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 	    cpu.restore();
 	    resetQueuePanel();
 	    updateReadouts();
 	    repaint();
+	    if (alg != null)
+	    	cpu.setAlgorithm(alg);
 	}
 	else if( e.getSource() == quitMI){
 	    stopAnimation();

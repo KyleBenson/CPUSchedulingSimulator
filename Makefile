@@ -24,10 +24,10 @@ javadocs: classes
 jarfile:
 	rm -rf $(PACKAGE)
 	mkdir -p $(PACKAGE)/src/
-#	cp -a src/pics $(PACKAGE)/src/
-#	cp -a src/lib/* $(PACKAGE)/src
-	cp -a bin/$(PACKAGE)/*.class $(PACKAGE)
-	jar -cvfm CPUSchedulingSimulator.jar src/manifest.txt $(PACKAGE)/*.class src/pics src/lib
+	cp -a src/pics $(PACKAGE)
+	cp -a src/lib $(PACKAGE)
+	cp -a src/$(PACKAGE)/* $(PACKAGE)/
+	jar -cvfm CPUSchedulingSimulator.jar src/manifest.txt $(PACKAGE)
 
 tarfile:
 	cd ..; tar -czf	../cpu.tar.gz *;mv ../cpu.tar.gz .
