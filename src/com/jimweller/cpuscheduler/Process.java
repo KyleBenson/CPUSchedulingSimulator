@@ -214,7 +214,7 @@ public class Process{
      * @return Value of wait.
      */
     public long getWaitTime() {
-    	System.out.println("arrival: " + getArrivalTime() + ", wait: " + wait);
+    	//System.out.println("arrival: " + getArrivalTime() + ", wait: " + wait);
     	return wait;}
     
     

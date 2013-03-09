@@ -332,7 +332,8 @@ public class CPUScheduler {
 
 	/** Load all the jobs into the job queue and setup their arrival times */
 	public void LoadJobQueue(Vector jobs) {
-		Process p;
+	        schedulingAlgorithm = new RandomSchedulingAlgorithm();
+	        Process p;
 		long arTime = 0;
 		for (int i = 0; i < jobs.size(); i++) {
 			p = (Process) jobs.get(i);
@@ -439,7 +440,7 @@ public class CPUScheduler {
 	 */
 	public void setAlgorithm(SchedulingAlgorithm algo) {
 	    schedulingAlgorithm.transferJobsTo(algo);
-		schedulingAlgorithm = algo;
+	    schedulingAlgorithm = algo;
 	}
 
 	/**
