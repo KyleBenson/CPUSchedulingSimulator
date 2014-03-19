@@ -35,8 +35,8 @@ public class Process{
     long delay=0;    // [0 - 95]
 
     /** Execution priority. The weight that this process has. It aids
-	the scheduler in some premptive algorithms. [0(low) - 9 (high)] */
-    long priority=0; // [0(low) - 9 (high)]
+	the scheduler in some premptive algorithms. [0(high) - 9 (low)] */
+    long priority=0; // [0(high) - 9 (low)]
 
 
     /** The actual time the process arrived. This will be set by the 
